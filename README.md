@@ -1,5 +1,8 @@
 # Negfix8
 
+[Negfix8](https://sites.google.com/site/negfix) created by
+[JaZ99](http://www.flickr.com/people/jaz99). Thank you sir.
+
 Negfix8 can be used to automate the process of scanning negative film. Both
 B&W negatives and color C-41 negatives are supported. A log curve is used for
 inversion, so the outcome resembles the traditional print.
