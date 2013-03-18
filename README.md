@@ -1,15 +1,15 @@
-# Negfix8
+# negfix8
 
-[Negfix8](https://sites.google.com/site/negfix) created by
+[negfix8](https://sites.google.com/site/negfix) created by
 [JaZ99](http://www.flickr.com/people/jaz99). Thank you sir.
 
-Negfix8 can be used to automate the process of scanning negative film. Both
+negfix8 can be used to automate the process of scanning negative film. Both
 B&W negatives and color C-41 negatives are supported. A log curve is used for
 inversion, so the outcome resembles the traditional print.
 
 ## Installation
 
-Negfix8 requires ImageMagick compiled with tiff support.
+negfix8 requires ImageMagick compiled with tiff support.
 
 ```bash
 $ brew install libtiff
@@ -20,7 +20,7 @@ $ brew install imagemagick --with-libtiff
 
 ### Scanning
 
-Negfix8 expects a tiff as input. For best results, scan your negative as a
+negfix8 expects a tiff as input. For best results, scan your negative as a
 positive with linear color channels (gamma = 1.0) and 16-bit color depth per
 channel. If using SilverFast scanning software, you'll want to scan color as
 48-bit HDR and B&W as 16-bit HDR.
@@ -31,7 +31,7 @@ negative, leave at least a 20 pixel border of the orange mask around the image.
 
 ### Processing
 
-Pass any images you wish to process to Negfix8. The results will be saved to
+Pass any images you wish to process to negfix8. The results will be saved to
 the same directory.
 
 ```bash
