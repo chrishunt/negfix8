@@ -26,14 +26,6 @@ MIRROR=""
 # Uncomment below, if you want 20% saturation boost
 #SATURATION="-modulate 100,120"
 
-# Starting with ImageMagick 6.8.0-5, there is -poly option
-# available, which speeds things up considerably.
-# If you have latest ImageMagick installed, comment out
-# the next 'convert' command to avoid unnecesary 
-# testing
-HAS_POLY=1
-convert -quiet rose: -poly "0,1" - > /dev/null 2>&1 || HAS_POLY=0
-
 # Additional speeding up is possible:
 # Locate and delete all occurances of "-evaluate Add 1".
 # Those are the safeguards against divide by zero error.
@@ -144,35 +136,18 @@ echo -n "Writing $OUTF... "
 # Real work is done below
 if [ "$5" = "1" -a "$6" = "1" -o ! -z "$SEPARATE" ]; then
 echo -n "(B&W) "
-    if [ $HAS_POLY -eq 1 ]; then
-        convert $MEM "${F}" $CSPACE $SEPARATE $BINNING $MIRROR \
-            -evaluate Add 1 -poly "$1,-1" -gamma $GAMMA -evaluate Subtract $4 \
-            $CS -comment "$COMMENT" $ZIP $SEPARATE "$OUTF"
-        EX=$?
-    else
-        convert $MEM "${F}" $CSPACE $SEPARATE $BINNING $MIRROR \
-            -evaluate Add 1 -fx "$1/u" -gamma $GAMMA -evaluate Subtract $4 \
-            $CS -comment "$COMMENT" $ZIP $SEPARATE "$OUTF"
-        EX=$?
-    fi
+    convert $MEM "${F}" $CSPACE $SEPARATE $BINNING $MIRROR \
+        -evaluate Add 1 -poly "$1,-1" -gamma $GAMMA -evaluate Subtract $4 \
+        $CS -comment "$COMMENT" $ZIP $SEPARATE "$OUTF"
+    EX=$?
 else
-    if [ $HAS_POLY -eq 1 ]; then
-        convert $MEM "${F}" $CSPACE $BINNING $MIRROR -separate -delete 3-5 \
-            \( -clone 0 -evaluate Add 1 -poly "$1,-1" \) \
-            \( -clone 1 -evaluate Add 1 -poly "$2,-1" -gamma $5 \) \
-            \( -clone 2 -evaluate Add 1 -poly "$3,-1" -gamma $6 \) \
-            -delete 0-2 -channel RGB,sync -combine -gamma $GAMMA \
-            -evaluate Subtract $4 $CS $SATURATION -comment "$COMMENT" $ZIP "$OUTF"
-        EX=$?
-    else
-        convert $MEM "${F}" $CSPACE $BINNING $MIRROR \
-            -channel R -evaluate Add 1 -fx "$1/u" \
-            -channel G -evaluate Add 1 -fx "$2/u" -gamma $5 \
-            -channel B -evaluate Add 1 -fx "$3/u" -gamma $6 \
-            -channel RGB,sync -gamma $GAMMA -evaluate Subtract $4 \
-            $CS $SATURATION -comment "$COMMENT" $ZIP "$OUTF"
-        EX=$?
-    fi
+    convert $MEM "${F}" $CSPACE $BINNING $MIRROR -separate -delete 3-5 \
+        \( -clone 0 -evaluate Add 1 -poly "$1,-1" \) \
+        \( -clone 1 -evaluate Add 1 -poly "$2,-1" -gamma $5 \) \
+        \( -clone 2 -evaluate Add 1 -poly "$3,-1" -gamma $6 \) \
+        -delete 0-2 -channel RGB,sync -combine -gamma $GAMMA \
+        -evaluate Subtract $4 $CS $SATURATION -comment "$COMMENT" $ZIP "$OUTF"
+    EX=$?
 fi
 
 if [ $EX -eq 0 ]; then
